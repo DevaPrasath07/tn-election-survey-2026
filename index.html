@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TN STATE ASSEMBLY ELECTION 2026 PUBLIC OPINION SURVEY</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Extra styling for the top disclaimer */
+        .legal-banner {
+            background-color: #fff3cd; /* Light yellow warning color */
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 12px;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 1.5;
+        }
+        .legal-banner a {
+            color: #856404;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="main-container">
+        <h1>TN State Assembly 2026</h1>
+        <p class="subtitle">Pre-Election Public Opinion Survey</p>
+
+        <div class="legal-banner">
+            <strong>⚠️ DISCLAIMER:</strong> This is a 100% independent, non-political research survey conducted for educational purposes only. 
+            It is <strong>NOT</strong> affiliated with any political party, candidate, or the Election Commission of India. 
+            <br>
+            <span style="font-size: 0.8rem;">
+                <a href="privacy.html" target="_blank">Privacy Policy</a> | 
+                <a href="methodology.html" target="_blank">View Methodology</a>
+            </span>
+        </div>
+
+        <div id="step-1">
+            <p style="text-align: center; margin-bottom: 15px;">Who do you think has the best vision for Tamil Nadu's future?</p>
+
+            <label class="party-card">
+                <input type="radio" name="party" value="DMK">
+                <img src="images/dmk.jpeg" alt="Stalin">
+                <div class="party-info"><h3>DMK+</h3><span>M.K. Stalin</span></div>
+            </label>
+
+            <label class="party-card">
+                <input type="radio" name="party" value="ADMK">
+                <img src="images/admk.jpeg" alt="EPS">
+                <div class="party-info"><h3>ADMK+</h3><span>Edappadi K. Palaniswami</span></div>
+            </label>
+
+            <label class="party-card">
+                <input type="radio" name="party" value="TVK">
+                <img src="images/tvk.jpeg" alt="Vijay">
+                <div class="party-info"><h3>TVK</h3><span>C. Vijay</span></div>
+            </label>
+
+            <label class="party-card">
+                <input type="radio" name="party" value="NTK">
+                <img src="images/ntk.jpeg" alt="Seeman">
+                <div class="party-info"><h3>NTK</h3><span>S. Seeman</span></div>
+            </label>
+
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Enter your Email ID for Verification" required>
+                <button onclick="requestOtp()">Send OTP to Email</button>
+            </div>
+        </div>
+
+        <div id="step-2" class="hidden">
+            <p>We sent a verification code to <b id="display-email"></b></p>
+            <p style="font-size: 0.8rem; color: #666;">(Please check your Inbox or Spam folder)</p>
+            <input type="text" id="otp-input" placeholder="Enter 4-digit Code" maxlength="4">
+            <button onclick="submitVote()">Confirm Vote</button>
+        </div>
+
+    </div>
+
+    <script>
+        let userEmail = "";
+
+        async function requestOtp() {
+            const party = document.querySelector('input[name="party"]:checked');
+            const email = document.getElementById('email').value;
+
+            if (!party) return alert("Please select a party first!");
+            
+            // Email Validation
+            if (!email.includes('@') || !email.includes('.')) {
+                return alert("Please enter a valid email address.");
+            }
+
+            userEmail = email;
+            const btn = document.querySelector('button'); // Get button to show loading state
+            const originalText = btn.innerText;
+            btn.innerText = "Sending...";
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('http://localhost:3000/api/request-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await res.json();
+                
+                if (res.ok) {
+                    document.getElementById('step-1').classList.add('hidden');
+                    document.getElementById('step-2').classList.remove('hidden');
+                    document.getElementById('display-email').innerText = email;
+                    // Also hide the disclaimer once they start voting to clean up UI
+                    document.querySelector('.legal-banner').style.display = 'none';
+                } else {
+                    alert(data.error);
+                }
+            } catch (err) {
+                alert("Server error. Is your backend running?");
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        async function submitVote() {
+            const otp = document.getElementById('otp-input').value;
+            const party = document.querySelector('input[name="party"]:checked').value;
+
+            const res = await fetch('http://localhost:3000/api/vote', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: userEmail, otp, party })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                document.getElementById('main-container').innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <h2 style="color: green; font-size: 3rem;">✔</h2>
+                        <h3>Vote Recorded!</h3>
+                        <p>Thank you for participating in this research survey.</p>
+                        <p style="font-size:0.8rem; color:#777; margin-top:20px">You can close this window now.</p>
+                    </div>`;
+            } else {
+                alert(data.error);
+            }
+        }
+    </script>
+</body>
+</html>

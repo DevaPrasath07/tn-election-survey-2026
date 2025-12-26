@@ -1,0 +1,107 @@
+/* Modern Reset */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+
+body {
+    /* 1. The Background Image with a White Overlay */
+    /* rgba(255, 255, 255, 0.6) means "White color with 60% opacity" */
+    background: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), 
+                url('images/bg.jpeg');
+    
+    background-size: cover;       /* Covers the whole screen */
+    background-position: center;  /* Centers the building */
+    background-attachment: fixed; /* Keeps image fixed when scrolling */
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    /* 2. Glassmorphism Effect (Semi-transparent Form) */
+    background: rgba(255, 255, 255, 0.85); /* 85% solid white */
+    backdrop-filter: blur(5px);            /* Blurs the background behind the box */
+    
+    width: 100%;
+    max-width: 500px;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2); /* Softer shadow */
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Subtle white border */
+}
+
+h1 { text-align: center; color: #1a1a1a; margin-bottom: 0.5rem; font-size: 1.5rem; }
+.subtitle { text-align: center; color: #666; margin-bottom: 2rem; font-size: 0.9rem; }
+
+/* --- 1. Base Card Styles (Keep this) --- */
+.party-card {
+    display: flex;
+    align-items: center;
+    border: 2px solid #e0e0e0; /* Default Grey Border */
+    margin-bottom: 10px;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    background: white;
+}
+
+/* --- 2. Party Specific Hovers (ADD THIS) --- */
+
+/* DMK: Red Theme */
+.party-card:has(input[value="DMK"]):hover {
+    border-color: #E81E25;       /* DMK Red */
+    background-color: #525050ff;   /* Light Red BG */
+}
+
+/* ADMK: Green Theme */
+.party-card:has(input[value="ADMK"]):hover {
+    border-color: #009546;       /* ADMK Green */
+    background-color: #eff1ef;   /* Light Green BG */
+}
+
+/* TVK: Yellow/Maroon Theme */
+.party-card:has(input[value="TVK"]):hover {
+    border-color: #fa1e1e;       /* TVK Yellow */
+    background-color: #f5e44c;   /* Light Yellow BG */
+}
+
+/* NTK: Deep Red/Tiger Theme */
+.party-card:has(input[value="NTK"]):hover {
+    border-color: #C0392B;       /* NTK Dark Red */
+    background-color: #b1e98b;   /* Light Maroon BG */
+}
+
+/* --- 3. Selected State (Optional: Keeps color after clicking) --- */
+.party-card:has(input:checked) {
+    border-width: 3px;
+    background-color: #f0f2f5;
+}
+
+/* Styles for Image & Text (Keep as is) */
+.party-card input { margin-right: 15px; transform: scale(1.5); }
+.party-card img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-right: 15px; }
+.party-info h3 { font-size: 1rem; color: #333; margin: 0; }
+.party-info span { font-size: 0.8rem; color: #888; }
+
+/* Find this section in your style.css and update it */
+input[type="tel"], 
+input[type="text"], 
+input[type="email"] { /* Added email type */
+    width: 100%; 
+    padding: 12px; 
+    border: 1px solid #ccc; 
+    border-radius: 6px; 
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+button {
+    width: 100%; padding: 12px; background: #008000; color: white; border: none;
+    border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 10px;
+}
+button:hover { background: #008000; }
+
+.hidden { display: none; }
+.legal-text { font-size: 0.75rem; color: #777; margin-top: 20px; text-align: center; border-top: 1px solid #eee; padding-top: 10px; }
