@@ -1,0 +1,25 @@
+{
+  "name": "tn-survey-2026",
+  "version": "1.0.0",
+  "description": "TN Election Survey App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "geoip-lite": "^1.4.10",
+    "helmet": "^8.1.0",
+    "mongoose": "^9.0.2",
+    "nodemailer": "^7.0.12"
+  },
+  "devDependencies": {}
+}
