@@ -104,7 +104,7 @@
             btn.disabled = true;
 
             try {
-                const res = await fetch('http://localhost:3000/api/request-otp', {
+                const res = await fetch('/api/request-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email })
@@ -133,7 +133,7 @@
             const otp = document.getElementById('otp-input').value;
             const party = document.querySelector('input[name="party"]:checked').value;
 
-            const res = await fetch('http://localhost:3000/api/vote', {
+            const res = await fetch('/api/vote', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: userEmail, otp, party })
