@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname)));
 
 // --- DATABASE CONNECTION (MongoDB) ---
 // PASTE YOUR REAL LINK INSIDE THE QUOTES BELOW:
-mongoose.connect("mongodb+srv://tnelectionsurvey_2026_user:<TNELECTIONSURVEY2026>@tnelectionsurvey2026.xmf1rom.mongodb.net/?appName=TNElectionsurvey2026")
+mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('✅ Connected to Cloud Database'))
     .catch(err => console.error('❌ DB Error:', err));
 
